@@ -1,5 +1,5 @@
 "use client"
-import {useState} from "react";
+import {useState,useEffect} from "react";
 import WalletExist from "./WalletExist";
 
 export default function Wallet({children}){
@@ -13,7 +13,19 @@ export default function Wallet({children}){
     console.log(window.mina)
     }
     const isAuro = injectedProvider ? window.mina : false
+    let isNetwork = null;
     
+    useEffect(() => {
+        // Define the event handler function
+        function handleChainChanged() {
+          setnetworkLive(window.mina.requestNetwork());
+        }
+      
+        // Add the event listener when the component mounts
+        window.mina.on('chainChanged', handleChainChanged);
+      
+        // Clean up the event listener when the component unmounts
+      }, []); // An empty de
     
     //To display all the accounts
     const updateWallet = async (accounts) => {     /* New */
@@ -25,8 +37,10 @@ export default function Wallet({children}){
         let accounts = await window.mina.request({
             method:"mina_requestAccounts"
         })
+        let isNetwork = await window.mina.request({ method:"mina_requestNetwork"});
+        console.log("The network is:",isNetwork);
         const network = await window.mina.requestNetwork();
-        console.log(accounts)
+        console.log("Accounts",accounts)
         updateWallet(accounts)
         settextUsed("Connected")
         setnetworkLive(network)

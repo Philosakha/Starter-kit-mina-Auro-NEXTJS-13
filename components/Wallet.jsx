@@ -2,11 +2,15 @@
 import {useState,useEffect} from "react";
 import WalletExist from "./WalletExist";
 
+
+
 export default function Wallet({children}){
     const initialState = { accounts: [] }               /* New */
     const [textUsed,settextUsed] = useState("Connect Auro")
     const [wallet, setWallet] = useState(initialState)  /* New */
     const [networkLive,setnetworkLive] = useState()
+    const [accountBalance,setAccountBalance] = useState();
+    
     let injectedProvider =  false
     if (typeof window.mina !== 'undefined') {
     injectedProvider = true
@@ -32,6 +36,24 @@ export default function Wallet({children}){
     setWallet({ accounts })
     console.log(wallet)                          /* New */
     }     
+
+    const getAccountBalance = async(accounts) =>{
+        const apiUrl = `https://api.minaexplorer.com/accounts/${accounts}`;
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json', // Add any headers you need
+            },
+          });
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+        }
+        else{
+            console.log("Error");
+        }
+    }
+
     const handleConnect = async  () => {
        
         let accounts = await window.mina.request({
@@ -42,6 +64,7 @@ export default function Wallet({children}){
         const network = await window.mina.requestNetwork();
         console.log("Accounts",accounts)
         updateWallet(accounts)
+        getAccountBalance(accounts)
         settextUsed("Connected")
         setnetworkLive(network)
         console.log(networkLive)

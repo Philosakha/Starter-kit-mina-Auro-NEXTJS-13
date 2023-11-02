@@ -1,7 +1,7 @@
 "use client"
 import {useState,useEffect} from "react";
 import WalletExist from "./WalletExist";
-import getAccountBalance  from getAccountBalance
+import { getAccountBalance } from "./getBalance";
 
 
 export default function Wallet({children}){
@@ -37,8 +37,6 @@ export default function Wallet({children}){
     console.log(wallet)                          /* New */
     }     
 
-    
-
     const handleConnect = async  () => {
        
         let accounts = await window.mina.request({
@@ -49,7 +47,8 @@ export default function Wallet({children}){
         const network = await window.mina.requestNetwork();
         console.log("Accounts",accounts)
         updateWallet(accounts)
-        getAccountBalance(accounts)
+        const value = await getAccountBalance(accounts)
+        console.log("Balance",value);
         settextUsed("Connected")
         setnetworkLive(network)
         console.log(networkLive)

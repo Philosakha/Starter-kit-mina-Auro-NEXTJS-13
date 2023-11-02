@@ -1,6 +1,6 @@
 "use server"
 
-const getAccountBalance = async(accounts) =>{
+export const getAccountBalance = async(accounts) =>{
     const apiUrl = `https://api.minaexplorer.com/accounts/${accounts}`;
     const response = await fetch(apiUrl, {
         method: 'GET',
@@ -10,7 +10,7 @@ const getAccountBalance = async(accounts) =>{
       });
     if(response.ok){
         const data = await response.json();
-        console.log(data);
+       return data;
     }
     else{
         console.log("Error");

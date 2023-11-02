@@ -1,7 +1,7 @@
 "use client"
 import {useState,useEffect} from "react";
 import WalletExist from "./WalletExist";
-
+import getAccountBalance  from getAccountBalance
 
 
 export default function Wallet({children}){

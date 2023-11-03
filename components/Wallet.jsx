@@ -48,7 +48,8 @@ export default function Wallet({children}){
         console.log("Accounts",accounts)
         updateWallet(accounts)
         const value = await getAccountBalance(accounts)
-        console.log("Balance",value);
+        console.log("Balance",typeof(parseInt(value.account.balance.total)));
+        setAccountBalance(parseInt(value.account.balance.total))
         settextUsed("Connected")
         setnetworkLive(network)
         console.log(networkLive)
@@ -63,6 +64,7 @@ export default function Wallet({children}){
                 { isAuro && <button className="btn btn-outline btn-success" onClick={handleConnect}>{textUsed}</button>}
                 {textUsed === "Connected" && isAuro   && <div className="badge badge-primary badge-outline">{networkLive}</div>}
                 {textUsed === "Connected" && isAuro   && wallet.accounts.length > 0  && <div className="badge badge-primary badge-outline">{wallet.accounts[0]}</div>}
+                {textUsed === "Connected" && isAuro   && wallet.accounts.length > 0  && <div className="badge badge-primary badge-outline">{accountBalance} MINA</div>}
             </div>
             {children}
         </>

@@ -2,6 +2,7 @@
 import {useState,useEffect} from "react";
 import WalletExist from "./WalletExist";
 import { getAccountBalance } from "./getBalance";
+import { useBalance } from "@/context/balance.context";
 
 
 export default function Wallet({children}){
@@ -10,6 +11,7 @@ export default function Wallet({children}){
     const [wallet, setWallet] = useState(initialState)  /* New */
     const [networkLive,setnetworkLive] = useState()
     const [accountBalance,setAccountBalance] = useState();
+    const {  updateBalance } = useBalance();
     
     let injectedProvider =  false
     if (typeof window.mina !== 'undefined') {
@@ -52,6 +54,7 @@ export default function Wallet({children}){
         setAccountBalance(parseInt(value.account.balance.total))
         settextUsed("Connected")
         setnetworkLive(network)
+        updateBalance(parseInt(value.account.balance.total))
         console.log(networkLive)
         
         

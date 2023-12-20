@@ -2,7 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import Wallet from "../components/Wallet"
 import { BalanceProvider } from '@/context/balance.context'
-
+import { WalletProvider } from '@/context/wallet.context'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -14,9 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     <body className={inter.className}>
-    <BalanceProvider><Wallet >
+    <BalanceProvider>
+      <WalletProvider>
+      <Wallet >
           {children}
-        </Wallet></BalanceProvider>
+        </Wallet></WalletProvider></BalanceProvider>
     </body>
     </html>
   )
